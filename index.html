@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head>npm run dev
+    <head>
         <title>App</title>
         <!--$ python -m http.server 8080 to view web-->
         <!-- link to css -->
@@ -17,7 +17,7 @@
         </nav>
 
         <div>
-            Caer <span id=""cartCount" class=""cart-badge">0</span>
+            <span id=""cartCount" class=""cart-badge">0</span>
         </div>
         </header> 
 
@@ -55,5 +55,39 @@
             <button onclick="closeAbout()">Close</button>
          </div>
          
+         <script>
+
+            //SHOW VIEWS
+            function showVeiw(viewId){
+                //all views
+                let views = document.getElementsByClassName("view");
+                //hide views
+                for (let i = 0; i < views.length; i++){
+                    views[i].style.display = "none";
+                }
+                //show selected views
+                document.getElementById(viewId).style.display = "block";
+            }
+
+            //ABOUT POPUP
+            function showAbout(){
+                document.getElementById("aboutPopup").style.display = "block";
+            }
+
+            function closeAbout(){
+                document.getElementById("aboutPopup").style.display = "none";
+            }
+
+            //track cart items
+            let cartCount =0;
+            cartCount++;
+
+            function addToCart(){
+                documeny.getElementById("cartCount").textContext = cartCount;
+            }
+         </script>
+
+
     </body>
     </html>
+
