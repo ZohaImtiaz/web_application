@@ -1,0 +1,45 @@
+/* 
+Color palette used:
+#BFB5AF (light taupe)
+#ECE2D0 (cream)
+#D5B9B2 (soft pink)
+#A26769 (dark rose red)
+*/
+
+/* page style */
+
+body {
+    font-family: Arial;
+    margin: 0;
+    background-color: #ECE2D0;
+}
+
+/* header */
+header {
+    background-color: #A26769;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* footer */
+footer {
+    background-color: #A26769;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Navigation */
+nav a {
+    color: white;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
