@@ -1,22 +1,49 @@
 <!DOCTYPE html>
 <html>
-    <head>
+    <head>npm run dev
         <title>App</title>
-        //link to css
+        <!--$ python -m http.server 8080 to view web-->
+        <!-- link to css -->
     </head>
 
     <body>
         <header>
             <div>Logo</div>
-            //switch btwn views
+            <!-- switch btwn views -->
         <nav>
             <a oneclick="showView('homeView')">Home</a>
-            <a one click="showView('browseView')">Home</a>
-            
+            <a oneclick="showView('browseView')">Browse</a>
+            <a oneclick="showView()">About</a>
         </nav>
 
+        <div>
+            Caer <span id=""cartCount" class=""cart-badge">0</span>
+        </div>
         </header> 
-        
+
+        <!-- Views -->
+
+        <!--Home-->
+         <div id="homeView" class="view">
+            <h2>Home Page</h2>
+         </div>
+
+        <!--browser-->
+         <div id="browserView" class="view">
+            <h2>Browse products</h2>
+         </div>
+
+         <!--product-->
+         <div id="productView" class="view">
+            <h2>Single Product</h2>
+         </div>
+
+         <!--cart-->
+          <div id="productView" class="view">
+            <h2>Shopping Cart</h2>
+         </div>
+
+go  
     </body>
 
     </html>
