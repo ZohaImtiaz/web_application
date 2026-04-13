@@ -2,30 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Automatic Zoom Boutique</title>
+  <title>Zomie's PlushWear</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+
+  <!-- HEADER -->
   <header>
-    <div class="logo">Automatic Zoom</div>
+    <div class="logo">Zomie's PlushWear</div>
+
     <nav>
-      <button class="nav-link" data-view="home-view">Home</button>
-      <button class="nav-link" data-view="browse-view">Browse</button>
-      <button id="about-btn" class="nav-link">About</button>
-      <button class="nav-link" data-view="cart-view">
-        Cart <span id="cart-count" class="cart-badge">0</span>
-      </button>
+      <a data-view="home-view">Home</a>
+      <a data-view="browse-view">Browse</a>
+      <a id="about-btn">About</a>
     </nav>
+
+    <div class="header-right" data-view="cart-view">
+      <span class="cart-label">Cart</span>
+      <span id="cart-count" class="cart-badge">0</span>
+    </div>
   </header>
 
   <main>
-    <!-- Home View -->
+
+    <!-- HOME VIEW -->
     <article id="home-view" class="view">
       <section class="hero">
-        <h1>Refined Pieces, Quiet Drama</h1>
+        <h1>Pixels & Plush Style</h1>
         <p>
-          A curated collection of modern wardrobe staples—tailored silhouettes, soft textures,
-          and subtle color stories with a touch of bold maroon.
+          A curated collection of modern wardrobe staples tailored silhouettes, soft textures and subtle color stories 
+          with a touch of pixels of your favourite characters.
         </p>
         <button class="primary-btn" data-view="browse-view">Start Browsing</button>
       </section>
@@ -34,28 +41,32 @@
         <h2>Explore by Mood</h2>
         <div class="grid">
           <div class="card">
-            <h3>Tailored & Polished</h3>
-            <p>Blazers, trousers, and shirts with clean lines.</p>
+            <h3>Plush & Cozy</h3>
+            <p>Ultra-soft hoodies, loungewear and snuggle ready essentials.</p>
           </div>
+
           <div class="card">
-            <h3>Soft & Cozy</h3>
-            <p>Knitwear, loungewear, and elevated basics.</p>
+            <h3>Pixel Fits</h3>
+            <p>Outfits inspired by Streamers, gaming worlds and digital style.</p>
           </div>
+
           <div class="card">
-            <h3>Statement Evenings</h3>
-            <p>Dresses, sequins, and bold silhouettes.</p>
+            <h3>Character Merch</h3>
+            <p>Clothing and collectibles featuring your favorite digital icons.</p>
           </div>
+
           <div class="card">
             <h3>Finishing Touches</h3>
-            <p>Accessories that quietly pull everything together.</p>
+            <p>Accessories and plush details to complete your look.</p>
           </div>
         </div>
       </section>
     </article>
 
-    <!-- Browse View -->
+    <!-- BROWSE VIEW -->
     <article id="browse-view" class="view" hidden>
       <h1>Browse Products</h1>
+
       <section class="browse-layout">
         <aside class="filters">
           <h2>Filter</h2>
@@ -91,6 +102,7 @@
                 <option value="price">Price (Low–High)</option>
               </select>
             </div>
+
             <div class="active-filters">
               <span>Results</span>
               <button id="clear-filters" class="link-btn">Clear All</button>
@@ -104,7 +116,7 @@
       </section>
     </article>
 
-    <!-- Single Product View -->
+    <!-- SINGLE PRODUCT VIEW -->
     <article id="product-view" class="view" hidden>
       <nav class="breadcrumbs" id="breadcrumbs"></nav>
 
@@ -146,7 +158,7 @@
       </section>
     </article>
 
-    <!-- Cart View -->
+    <!-- CART VIEW -->
     <article id="cart-view" class="view" hidden>
       <h1>Shopping Cart</h1>
 
@@ -172,6 +184,7 @@
         <aside class="cart-summary">
           <div class="shipping">
             <h2>Shipping</h2>
+
             <div class="control-group">
               <span>Destination</span>
               <select id="ship-destination">
@@ -202,44 +215,56 @@
       </section>
     </article>
 
-    <!-- About Dialog -->
+    <!-- ABOUT DIALOG -->
     <dialog id="about-dialog">
       <form method="dialog" class="about-content">
         <header>
           <h2>About This Project</h2>
           <button value="cancel" class="close-btn" aria-label="Close">&times;</button>
         </header>
+
         <section>
           <p>
-            This single-page application was created as a COMP 3512 assignment to demonstrate
-            DOM manipulation, JSON data handling, and client-side state management.
+            This application was created as a COMP 3512 assignment to show
+            DOM manipulation, JSON data handling and client side state management.
           </p>
+
           <p>
-            Technologies used: semantic HTML, custom CSS (neutral palette with maroon accents),
-            and vanilla JavaScript with the Fetch API and <code>async/await</code> for loading JSON data.
+            Technologies used: semantic HTML, custom CSS and vanilla JavaScript with the Fetch API and <code>async/await</code>.
           </p>
+
           <p class="muted small">
-            Fetch API reference: MDN Web Docs – “Using the Fetch API”.
+            CSS & layout references:<br>
+            MDN Web Docs — CSS Selectors<br>
+            MDN Web Docs — Media Queries<br>
+            Bootstrap E‑commerce Examples<br>
+            Tailwind UI Blocks<br>
+            CSS‑Tricks Layout Guides
           </p>
+
           <p>
-            Data set: curated apparel catalog with gender, category, size, color, and sales metadata.
+            Data set: curated apparel catalog with gender, category, size, color and sales metadata.
           </p>
+
           <p>
-            GitHub repository: <a href="#" target="_blank">https://github.com/example/automatic-zoom</a>
+            GitHub repository: <a href="#" target="_blank">https://github.com/INSERTLINKZOHAPLSSS</a>
           </p>
         </section>
+
         <footer>
           <button value="cancel" class="secondary-btn">Close</button>
         </footer>
       </form>
     </dialog>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Automatic Zoom Boutique</p>
+    <p>&copy; 2026 Zomie's PlushWear</p>
     <p>
       <a href="#" target="_blank">GitHub</a> ·
-      <span>Built for COMP 3512 SPA assignment</span>
+      <span>Built for COMP 3512 assignment</span>
     </p>
   </footer>
 
