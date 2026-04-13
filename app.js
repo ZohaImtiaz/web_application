@@ -1,9 +1,12 @@
-// Global state
+
+// Global State
+// Stores product data, cart contents and the currently viewed product.
 let products = [];
 let cart = [];
 let currentProduct = null;
 
-// DOM references
+// DOM References
+// Cached references to all major UI elements for performance.
 const views = document.querySelectorAll(".view");
 const navLinks = document.querySelectorAll("[data-view]");
 const cartCountSpan = document.getElementById("cart-count");
@@ -47,7 +50,8 @@ const checkoutMsg = document.getElementById("checkout-msg");
 const aboutDialog = document.getElementById("about-dialog");
 const aboutBtn = document.getElementById("about-btn");
 
-// Filter state
+// Filter State
+// Tracks all active filters for gender, category, size, and color.
 const filterState = {
   genders: [],
   categories: [],
@@ -56,6 +60,7 @@ const filterState = {
 };
 
 // Initialization
+// Sets up navigation, dialogs, event listeners, and loads products.
 window.addEventListener("DOMContentLoaded", () => {
   setupNav();
   setupAboutDialog();
@@ -66,52 +71,50 @@ window.addEventListener("DOMContentLoaded", () => {
   loadProducts();
 });
 
-// View switching
+// View Switching
+// Shows one view at a time by toggling the hidden attribute.
 function showView(id) {
   views.forEach(v => {
     v.hidden = v.id !== id;
   });
 }
 
-// Navigation
+// Navigation Setup
+// Handles switching between Home, Browse, Product, and Cart views.
 function setupNav() {
   navLinks.forEach(btn => {
     btn.addEventListener("click", () => {
       const viewId = btn.getAttribute("data-view");
       if (viewId) {
         showView(viewId);
-        if (viewId === "browse-view") {
-          renderBrowse();
-        } else if (viewId === "cart-view") {
-          renderCart();
-        }
+        if (viewId === "browse-view") renderBrowse();
+        else if (viewId === "cart-view") renderCart();
       }
     });
   });
 
-  // Buttons inside content with data-view
+  // Delegated navigation for buttons inside content
   document.body.addEventListener("click", function (e) {
     const target = e.target;
     const view = target.getAttribute && target.getAttribute("data-view");
     if (view) {
       showView(view);
-      if (view === "browse-view") {
-        renderBrowse();
-      } else if (view === "cart-view") {
-        renderCart();
-      }
+      if (view === "browse-view") renderBrowse();
+      else if (view === "cart-view") renderCart();
     }
   });
 }
 
-// About dialog
+// About Dialog Setup
+// Opens the About modal when the user clicks the About button.
 function setupAboutDialog() {
   aboutBtn.addEventListener("click", () => {
     aboutDialog.showModal();
   });
 }
 
-// Load products using fetch + async/await
+// Product Loading
+// Fetches product data and initializes filter options + browse view.
 async function loadProducts() {
   try {
     const response = await fetch("data-compact.json");
@@ -124,7 +127,8 @@ async function loadProducts() {
   }
 }
 
-// Build filter options from data
+// Build Filter Options
+// Dynamically generates filter checkboxes based on product data.
 function buildFilterOptions() {
   const categories = new Set();
   const sizes = new Set();
@@ -136,6 +140,7 @@ function buildFilterOptions() {
     p.color.forEach(c => colors.add(c.name));
   });
 
+  // Category filters
   filterCategoryDiv.innerHTML = "";
   categories.forEach(cat => {
     const label = document.createElement("label");
@@ -148,6 +153,7 @@ function buildFilterOptions() {
     filterCategoryDiv.appendChild(label);
   });
 
+  // Size filters
   filterSizeDiv.innerHTML = "";
   sizes.forEach(size => {
     const label = document.createElement("label");
@@ -160,6 +166,7 @@ function buildFilterOptions() {
     filterSizeDiv.appendChild(label);
   });
 
+  // Color filters
   filterColorDiv.innerHTML = "";
   colors.forEach(color => {
     const label = document.createElement("label");
@@ -173,7 +180,8 @@ function buildFilterOptions() {
   });
 }
 
-// Browse events
+// Browse View Event Setup
+// Handles filter changes, sorting, and clearing filters.
 function setupBrowseEvents() {
   genderCheckboxes.forEach(cb => {
     cb.addEventListener("change", () => {
@@ -207,6 +215,8 @@ function setupBrowseEvents() {
   });
 }
 
+// Clear All Filters
+// Resets all filter checkboxes and filter state.
 function clearAllFilters() {
   filterState.genders = [];
   filterState.categories = [];
@@ -219,6 +229,8 @@ function clearAllFilters() {
   filterColorDiv.querySelectorAll("input").forEach(cb => cb.checked = false);
 }
 
+// Update Filter State
+// Reads all checked filter inputs and updates filterState.
 function updateFilterState() {
   filterState.genders = Array.from(genderCheckboxes)
     .filter(cb => cb.checked)
@@ -237,15 +249,12 @@ function updateFilterState() {
     .map(cb => cb.value);
 }
 
+// Apply Filters
+// Returns only products that match all active filters.
 function applyFilters(list) {
   return list.filter(p => {
-    if (filterState.genders.length > 0 && !filterState.genders.includes(p.gender)) {
-      return false;
-    }
-
-    if (filterState.categories.length > 0 && !filterState.categories.includes(p.category)) {
-      return false;
-    }
+    if (filterState.genders.length > 0 && !filterState.genders.includes(p.gender)) return false;
+    if (filterState.categories.length > 0 && !filterState.categories.includes(p.category)) return false;
 
     if (filterState.sizes.length > 0) {
       const hasSize = p.sizes.some(s => filterState.sizes.includes(s));
@@ -262,19 +271,20 @@ function applyFilters(list) {
   });
 }
 
+// Sort Products
+// Sorts products alphabetically or by price.
 function sortProducts(list) {
   const sortBy = sortSelect.value;
   const copy = list.slice();
 
-  if (sortBy === "name") {
-    copy.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortBy === "price") {
-    copy.sort((a, b) => a.price - b.price);
-  }
+  if (sortBy === "name") copy.sort((a, b) => a.name.localeCompare(b.name));
+  else if (sortBy === "price") copy.sort((a, b) => a.price - b.price);
 
   return copy;
 }
 
+// Render Filter Tags
+// Displays active filters as tags above the product grid.
 function renderFilterTags() {
   filterTagsDiv.innerHTML = "";
 
@@ -291,6 +301,8 @@ function renderFilterTags() {
   filterState.colors.forEach(c => addTag(c));
 }
 
+// Render Browse View
+// Applies filters, sorting, and displays product cards.
 function renderBrowse() {
   if (!products || products.length === 0) return;
 
@@ -351,7 +363,8 @@ function renderBrowse() {
   });
 }
 
-// Single product view
+// Product View Event Setup
+// Handles Add to Cart from the product detail page.
 function setupProductEvents() {
   addToCartBtn.addEventListener("click", () => {
     if (!currentProduct) return;
@@ -371,6 +384,8 @@ function setupProductEvents() {
   });
 }
 
+// Open Product View
+// Loads a single product into the product detail view.
 function openProduct(id) {
   const product = products.find(p => p.id === id);
   if (!product) return;
@@ -380,6 +395,8 @@ function openProduct(id) {
   renderProductView(product);
 }
 
+// Render Product View
+// Populates product detail UI with selected product data.
 function renderProductView(p) {
   breadcrumbsNav.innerHTML = "";
   const parts = ["Home", capitalize(p.gender), p.category, p.name];
@@ -395,6 +412,7 @@ function renderProductView(p) {
   productMaterialEl.textContent = "Material: " + p.material;
   productQtyInput.value = 1;
 
+  // Size options
   sizeOptionsDiv.innerHTML = "";
   p.sizes.forEach(size => {
     const btn = document.createElement("button");
@@ -410,6 +428,7 @@ function renderProductView(p) {
   const firstSize = sizeOptionsDiv.querySelector(".pill");
   if (firstSize) firstSize.classList.add("active");
 
+  // Color options
   colorOptionsDiv.innerHTML = "";
   p.color.forEach(c => {
     const swatch = document.createElement("button");
@@ -428,7 +447,8 @@ function renderProductView(p) {
   if (firstColor) firstColor.classList.add("active");
 }
 
-// Cart logic
+// Cart Event Setup
+// Handles shipping changes, checkout, and cart updates.
 function setupCartEvents() {
   shipDestinationSelect.addEventListener("change", updateTotals);
   shipMethodRadios.forEach(r => r.addEventListener("change", updateTotals));
@@ -446,6 +466,8 @@ function setupCartEvents() {
   });
 }
 
+// Add Product to Cart
+// Adds or increments a product in the cart array.
 function addProductToCart(product, qty, size, color) {
   const existing = cart.find(
     item => item.id === product.id && item.size === size && item.color === color
@@ -470,11 +492,15 @@ function addProductToCart(product, qty, size, color) {
   }
 }
 
+// Update Cart Count
+// Updates the cart quantity badge in the header.
 function updateCartCount() {
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
   cartCountSpan.textContent = totalQty;
 }
 
+// Render Cart View
+// Displays all cart items and updates totals.
 function renderCart() {
   cartBody.innerHTML = "";
 
@@ -546,6 +572,8 @@ function renderCart() {
   updateTotals();
 }
 
+// Update Totals
+// Recalculates merchandise, shipping, tax, and final total.
 function updateTotals() {
   const merchTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   let shipping = 0;
@@ -590,6 +618,7 @@ function updateTotals() {
 }
 
 // Helpers
+// Small utility functions used across the app.
 function capitalize(str) {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1);
