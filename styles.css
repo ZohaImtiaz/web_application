@@ -20,7 +20,7 @@ body {
   color: var(--text);
 }
 
-/* ---------------- HEADER (CLEAN + FIXED) ---------------- */
+/*HEADER */
 
 header {
   background: var(--bg-alt);
