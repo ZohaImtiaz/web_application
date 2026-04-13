@@ -1,93 +1,248 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>App</title>
-        <!--$ python -m http.server 8080 to view web-->
-        <!-- link to css -->
-    </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Automatic Zoom Boutique</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo">Automatic Zoom</div>
+    <nav>
+      <button class="nav-link" data-view="home-view">Home</button>
+      <button class="nav-link" data-view="browse-view">Browse</button>
+      <button id="about-btn" class="nav-link">About</button>
+      <button class="nav-link" data-view="cart-view">
+        Cart <span id="cart-count" class="cart-badge">0</span>
+      </button>
+    </nav>
+  </header>
 
-    <body>
-        <header>
-            <div>Logo</div>
-            <!-- switch btwn views -->
-        <nav>
-            <a oneclick="showView('homeView')">Home</a>
-            <a oneclick="showView('browseView')">Browse</a>
-            <a oneclick="showView()">About</a>
-        </nav>
+  <main>
+    <!-- Home View -->
+    <article id="home-view" class="view">
+      <section class="hero">
+        <h1>Refined Pieces, Quiet Drama</h1>
+        <p>
+          A curated collection of modern wardrobe staples—tailored silhouettes, soft textures,
+          and subtle color stories with a touch of bold maroon.
+        </p>
+        <button class="primary-btn" data-view="browse-view">Start Browsing</button>
+      </section>
 
-        <div>
-            <span id=""cartCount" class=""cart-badge">0</span>
+      <section class="featured-grid">
+        <h2>Explore by Mood</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Tailored & Polished</h3>
+            <p>Blazers, trousers, and shirts with clean lines.</p>
+          </div>
+          <div class="card">
+            <h3>Soft & Cozy</h3>
+            <p>Knitwear, loungewear, and elevated basics.</p>
+          </div>
+          <div class="card">
+            <h3>Statement Evenings</h3>
+            <p>Dresses, sequins, and bold silhouettes.</p>
+          </div>
+          <div class="card">
+            <h3>Finishing Touches</h3>
+            <p>Accessories that quietly pull everything together.</p>
+          </div>
         </div>
-        </header> 
+      </section>
+    </article>
 
-        <!-- Views -->
+    <!-- Browse View -->
+    <article id="browse-view" class="view" hidden>
+      <h1>Browse Products</h1>
+      <section class="browse-layout">
+        <aside class="filters">
+          <h2>Filter</h2>
 
-        <!--Home-->
-         <div id="homeView" class="view">
-            <h2>Home Page</h2>
-         </div>
+          <div class="filter-group">
+            <h3>Gender</h3>
+            <label><input type="checkbox" class="filter-gender" value="womens"> Womens</label>
+            <label><input type="checkbox" class="filter-gender" value="mens"> Mens</label>
+          </div>
 
-        <!--browser-->
-         <div id="browserView" class="view">
-            <h2>Browse products</h2>
-         </div>
+          <div class="filter-group">
+            <h3>Category</h3>
+            <div id="filter-category"></div>
+          </div>
 
-         <!--product-->
-         <div id="productView" class="view">
-            <h2>Single Product</h2>
-         </div>
+          <div class="filter-group">
+            <h3>Size</h3>
+            <div id="filter-size"></div>
+          </div>
 
-         <!--cart-->
-          <div id="productView" class="view">
-            <h2>Shopping Cart</h2>
-         </div>
+          <div class="filter-group">
+            <h3>Color</h3>
+            <div id="filter-color"></div>
+          </div>
+        </aside>
 
-         <!--Footer-->
-         <footer>
-            <p>GitHub | Contact | About</p>
-         </footer>  
+        <section class="results">
+          <div class="results-header">
+            <div>
+              <label for="sort-select">Sort</label>
+              <select id="sort-select">
+                <option value="name">Product Name (A–Z)</option>
+                <option value="price">Price (Low–High)</option>
+              </select>
+            </div>
+            <div class="active-filters">
+              <span>Results</span>
+              <button id="clear-filters" class="link-btn">Clear All</button>
+              <div id="filter-tags"></div>
+            </div>
+          </div>
 
-         <!--about-->
-         <div id="aboutPopup">
-            <h3>About</h3>
-            <p>Zoha Imtiaz</p>
-            <button onclick="closeAbout()">Close</button>
-         </div>
-         
-         <script>
+          <div id="products-grid" class="grid products-grid"></div>
+          <p id="no-results" class="muted" hidden>No products match your filters.</p>
+        </section>
+      </section>
+    </article>
 
-            //SHOW VIEWS
-            function showVeiw(viewId){
-                //all views
-                let views = document.getElementsByClassName("view");
-                //hide views
-                for (let i = 0; i < views.length; i++){
-                    views[i].style.display = "none";
-                }
-                //show selected views
-                document.getElementById(viewId).style.display = "block";
-            }
+    <!-- Single Product View -->
+    <article id="product-view" class="view" hidden>
+      <nav class="breadcrumbs" id="breadcrumbs"></nav>
 
-            //ABOUT POPUP
-            function showAbout(){
-                document.getElementById("aboutPopup").style.display = "block";
-            }
+      <section class="product-layout">
+        <div class="product-images">
+          <div class="main-image placeholder-image" id="product-main-image"></div>
+          <div class="thumbs">
+            <div class="thumb placeholder-image"></div>
+            <div class="thumb placeholder-image"></div>
+          </div>
+        </div>
 
-            function closeAbout(){
-                document.getElementById("aboutPopup").style.display = "none";
-            }
+        <div class="product-info">
+          <h1 id="product-title"></h1>
+          <p id="product-price" class="price"></p>
+          <p id="product-description"></p>
+          <p id="product-material" class="muted"></p>
 
-            //track cart items
-            let cartCount =0;
-            cartCount++;
+          <div class="product-controls">
+            <label class="control-group">
+              <span>Quantity</span>
+              <input type="number" id="product-qty" min="1" value="1">
+            </label>
 
-            function addToCart(){
-                documeny.getElementById("cartCount").textContext = cartCount;
-            }
-         </script>
+            <div class="control-group">
+              <span>Size</span>
+              <div id="size-options" class="pill-group"></div>
+            </div>
 
+            <div class="control-group">
+              <span>Color</span>
+              <div id="color-options" class="color-group"></div>
+            </div>
 
-    </body>
-    </html>
+            <button id="add-to-cart-btn" class="primary-btn">+ Add to Cart</button>
+            <p id="add-to-cart-msg" class="success-msg" hidden>Added to cart.</p>
+          </div>
+        </div>
+      </section>
+    </article>
 
+    <!-- Cart View -->
+    <article id="cart-view" class="view" hidden>
+      <h1>Shopping Cart</h1>
+
+      <section class="cart-layout">
+        <div class="cart-items">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cart-body"></tbody>
+          </table>
+          <p id="empty-cart-msg" class="muted">Your cart is empty.</p>
+        </div>
+
+        <aside class="cart-summary">
+          <div class="shipping">
+            <h2>Shipping</h2>
+            <div class="control-group">
+              <span>Destination</span>
+              <select id="ship-destination">
+                <option value="CA">Canada</option>
+                <option value="US">United States</option>
+                <option value="INTL">International</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <span>Method</span>
+              <label><input type="radio" name="ship-method" value="standard" checked> Standard</label>
+              <label><input type="radio" name="ship-method" value="express"> Express</label>
+              <label><input type="radio" name="ship-method" value="priority"> Priority</label>
+            </div>
+          </div>
+
+          <div class="totals">
+            <div><span>Merchandise</span><span id="total-merch">$0.00</span></div>
+            <div><span>Shipping</span><span id="total-shipping">$0.00</span></div>
+            <div><span>Tax</span><span id="total-tax">$0.00</span></div>
+            <div class="total-row"><span>Total</span><span id="total-final">$0.00</span></div>
+          </div>
+
+          <button id="checkout-btn" class="primary-btn">Checkout</button>
+          <p id="checkout-msg" class="success-msg" hidden>Thank you! Your order has been placed.</p>
+        </aside>
+      </section>
+    </article>
+
+    <!-- About Dialog -->
+    <dialog id="about-dialog">
+      <form method="dialog" class="about-content">
+        <header>
+          <h2>About This Project</h2>
+          <button value="cancel" class="close-btn" aria-label="Close">&times;</button>
+        </header>
+        <section>
+          <p>
+            This single-page application was created as a COMP 3512 assignment to demonstrate
+            DOM manipulation, JSON data handling, and client-side state management.
+          </p>
+          <p>
+            Technologies used: semantic HTML, custom CSS (neutral palette with maroon accents),
+            and vanilla JavaScript with the Fetch API and <code>async/await</code> for loading JSON data.
+          </p>
+          <p class="muted small">
+            Fetch API reference: MDN Web Docs – “Using the Fetch API”.
+          </p>
+          <p>
+            Data set: curated apparel catalog with gender, category, size, color, and sales metadata.
+          </p>
+          <p>
+            GitHub repository: <a href="#" target="_blank">https://github.com/example/automatic-zoom</a>
+          </p>
+        </section>
+        <footer>
+          <button value="cancel" class="secondary-btn">Close</button>
+        </footer>
+      </form>
+    </dialog>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Automatic Zoom Boutique</p>
+    <p>
+      <a href="#" target="_blank">GitHub</a> ·
+      <span>Built for COMP 3512 SPA assignment</span>
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
