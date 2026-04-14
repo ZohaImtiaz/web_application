@@ -380,11 +380,15 @@ main {
 }
 
 /* CART */
+.cart-items {
+  flex: 1;
+  max-width: 65%;
+}
 
 .cart-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
 .cart-items table {
@@ -416,6 +420,8 @@ main {
   border-radius: 0.75rem;
   padding: 1rem;
   border: 1px solid var(--border);
+  width: 280px;
+  flex-shrink: 0;
 }
 
 .cart-summary .totals > div {
