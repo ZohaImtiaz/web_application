@@ -3,6 +3,11 @@ let products = [];
 let cart = [];
 let currentProduct = null;
 
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+
 // DOM References
 const views = document.querySelectorAll(".view");
 const navLinks = document.querySelectorAll("[data-view]");
@@ -464,9 +469,11 @@ function setupCartEvents() {
 }
 
 // Add to Cart
-function addProductToCart(product, qty, size, color) {
+function addProductToCart(product, qty, size, colorName) {
+  const colorObj = product.color.find(c => c.name === colorName);
+
   const existing = cart.find(
-    item => item.id === product.id && item.size === size && item.color === color
+    item => item.id === product.id && item.size === size && item.color === colorName
   );
 
   if (existing) {
@@ -477,18 +484,17 @@ function addProductToCart(product, qty, size, color) {
       name: product.name,
       price: product.price,
       size: size,
-      color: color,
+      color: colorName,
+      colorHex: colorObj ? colorObj.hex : "#000000",
       qty: qty
     });
   }
 
   updateCartCount();
   saveCart();
-
-  if (document.getElementById("cart-view").hidden === false) {
-    renderCart();
-  }
+  if (!document.getElementById("cart-view").hidden) renderCart();
 }
+
 
 // Cart Count
 function updateCartCount() {
@@ -519,10 +525,11 @@ function renderCart() {
       <td>${item.name}</td>
 
       <td>
-        <div class="color-swatch" 
-             style="background:${item.color}; width:18px; height:18px; border-radius:50%;">
-        </div>
+      <div class="color-swatch"
+      style="background:${item.colorHex}; width:18px; height:18px; border-radius:50%;">
+      </div>
       </td>
+
 
       <td>${item.size}</td>
 
