@@ -370,9 +370,10 @@ main {
   width: 22px;
   height: 22px;
   border-radius: 999px;
-  border: 2px solid transparent;
-  cursor: pointer;
+  border: 2px solid var(--border); 
+  background-color: currentColor;
 }
+
 
 .color-swatch.active {
   border-color: var(--accent);
@@ -487,6 +488,7 @@ main {
   width: 60px;
   aspect-ratio: 1 / 1;
   border-radius: 0.5rem;
-  background: linear-gradient(135deg, #ddd, #f5f5f5);
+  background: linear-gradient(135deg, #ccc, #e6e6e6);
   margin: 0 auto;
+  border: 1px solid var(--border);
 }

@@ -588,7 +588,6 @@ function renderCart() {
   updateTotals();
 }
 
-
 // Update Totals
 // Recalculates merchandise, shipping, tax, and final total.
 function updateTotals() {
