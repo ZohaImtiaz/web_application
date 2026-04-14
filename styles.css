@@ -476,3 +476,17 @@ main {
     flex-wrap: wrap;
   }
 }
+
+.cart-items table th:first-child,
+.cart-items table td:first-child {
+  width: 80px;
+  text-align: center;
+}
+
+.cart-item-image {
+  width: 60px;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.5rem;
+  background: linear-gradient(135deg, #ddd, #f5f5f5);
+  margin: 0 auto;
+}

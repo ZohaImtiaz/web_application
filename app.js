@@ -502,75 +502,92 @@ function updateCartCount() {
 // Render Cart View
 // Displays all cart items and updates totals.
 function renderCart() {
+  const cartBody = document.getElementById("cart-body");
+  const emptyMsg = document.getElementById("empty-cart-msg");
+
   cartBody.innerHTML = "";
 
   if (cart.length === 0) {
-    emptyCartMsg.style.display = "block";
-    checkoutBtn.disabled = true;
-    shipDestinationSelect.disabled = true;
-    shipMethodRadios.forEach(r => r.disabled = true);
-  } else {
-    emptyCartMsg.style.display = "none";
-    checkoutBtn.disabled = false;
-    shipDestinationSelect.disabled = false;
-    shipMethodRadios.forEach(r => r.disabled = false);
+    emptyMsg.hidden = false;
+    updateTotals();
+    return;
   }
 
+  emptyMsg.hidden = true;
+
   cart.forEach((item, index) => {
-    const tr = document.createElement("tr");
+    const row = document.createElement("tr");
 
-    const tdItem = document.createElement("td");
-    tdItem.textContent = item.name;
+    row.innerHTML = `
+      <td>
+        <div class="cart-item-image"></div>
+      </td>
 
-    const tdColor = document.createElement("td");
-    tdColor.textContent = item.color || "-";
+      <td>${item.name}</td>
 
-    const tdSize = document.createElement("td");
-    tdSize.textContent = item.size || "-";
+      <td>
+        <div class="color-swatch" 
+             style="background:${item.color}; width:18px; height:18px; border-radius:50%;">
+        </div>
+      </td>
 
-    const tdPrice = document.createElement("td");
-    tdPrice.textContent = "$" + item.price.toFixed(2);
+      <td>${item.size}</td>
 
-    const tdQty = document.createElement("td");
-    const qtyInput = document.createElement("input");
-    qtyInput.type = "number";
-    qtyInput.min = "1";
-    qtyInput.value = item.qty;
-    qtyInput.addEventListener("change", () => {
-      const newQty = parseInt(qtyInput.value, 10) || 1;
-      item.qty = newQty;
-      updateCartCount();
+      <td>$${item.price.toFixed(2)}</td>
+
+      <td>
+        <input 
+          type="number" 
+          class="qty-input" 
+          min="1" 
+          value="${item.qty}" 
+          data-index="${index}"
+        >
+      </td>
+
+      <td>$${(item.price * item.qty).toFixed(2)}</td>
+
+      <td>
+        <button class="link-btn remove-btn" data-index="${index}">
+          Remove
+        </button>
+      </td>
+    `;
+
+    cartBody.appendChild(row);
+  });
+
+  // Quantity change handler
+  document.querySelectorAll(".qty-input").forEach(input => {
+    input.addEventListener("change", (e) => {
+      const i = e.target.dataset.index;
+      const newQty = parseInt(e.target.value);
+
+      if (newQty > 0) {
+        cart[i].qty = newQty;
+      } else {
+        cart[i].qty = 1;
+        e.target.value = 1;
+      }
+
+      saveCart();
       renderCart();
     });
-    tdQty.appendChild(qtyInput);
+  });
 
-    const tdSubtotal = document.createElement("td");
-    tdSubtotal.textContent = "$" + (item.price * item.qty).toFixed(2);
-
-    const tdDelete = document.createElement("td");
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "X";
-    delBtn.className = "secondary-btn";
-    delBtn.addEventListener("click", () => {
-      cart.splice(index, 1);
-      updateCartCount();
+  // Remove button handler
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const i = e.target.dataset.index;
+      cart.splice(i, 1);
+      saveCart();
       renderCart();
     });
-    tdDelete.appendChild(delBtn);
-
-    tr.appendChild(tdItem);
-    tr.appendChild(tdColor);
-    tr.appendChild(tdSize);
-    tr.appendChild(tdPrice);
-    tr.appendChild(tdQty);
-    tr.appendChild(tdSubtotal);
-    tr.appendChild(tdDelete);
-
-    cartBody.appendChild(tr);
   });
 
   updateTotals();
 }
+
 
 // Update Totals
 // Recalculates merchandise, shipping, tax, and final total.
